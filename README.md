@@ -17,7 +17,7 @@ On Windows:
 cd project-dir
 .\run.cmd
 
-firefox localhost:8080
+start firefox localhost:8080
 ```
 
 On Linux:
