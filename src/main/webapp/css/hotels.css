@@ -1,0 +1,20 @@
+/*!
+ * Home Page: https://github.com/pponec/demo-ajax
+ * License: Pavel Ponec, Apache License, Version 2.0
+ */
+
+@import "bootstrap.css";
+
+body { margin: 5px 20px; background-color: #f3f6f7;}
+h1, h2 { color: SteelBlue;}
+.table td { padding: 0.1em 0.2em; }
+
+.subtitle {font-size: 10px; color: silver;}
+#form {margin-bottom: 2px;}
+#form input {width: 200px;}
+.form-control {display: inline;}
+.table th {background-color: #e8e8e8;}
+.sortable {background-repeat: no-repeat; background-position: right; padding-right: 14px; color: #212529;}
+.sortable.asc {background-image: url('/org/ujorm/images/v1/order/up.png')}
+.sortable.desc {background-image: url('/org/ujorm/images/v1/order/down.png')}
+.sortable.both {background-image: url('/org/ujorm/images/v1/order/both.png')}
