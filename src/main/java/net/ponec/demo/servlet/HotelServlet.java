@@ -57,7 +57,7 @@ public class HotelServlet extends HttpServlet {
             final HttpServletResponse output) throws ServletException, IOException {
 
         new TableBuilder<Hotel>("Common Hotel Report")
-                .addOrder("#")
+                .addOrder("Ord.")
                 .add(Hotel::getName, "Hotel", NAME).sortable(true)
                 .add(hotel -> hotel.getCity().getName(), "City", CITY).sortable()
                 .add(Hotel::getStreet, "Street").sortable()
