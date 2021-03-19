@@ -5,14 +5,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.ujorm.tools.common.StreamUtils;
-import org.ujorm.tools.web.table.TableBuilder;
+import org.ujorm.tools.web.report.ReportBuilder;
 
 /**
  *
@@ -53,13 +52,13 @@ public class HotelService {
 
     /**
      * Direct stream of data source.
-     * @param builder An instance of TableBuilder to get some more parameters
+     * @param builder An instance of ReportBuilder to get some more parameters
      * @param limit Row limit
      * @param namePattern A name pattern
      * @param cityPattern a ioty pattern
      * @return
      */
-    public Stream<Hotel> selectHotels(TableBuilder<Hotel> builder,
+    public Stream<Hotel> selectHotels(ReportBuilder<Hotel> builder,
             int limit,
             @Nonnull String namePattern,
             @Nonnull String cityPattern) {

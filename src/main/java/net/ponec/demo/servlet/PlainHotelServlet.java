@@ -28,13 +28,13 @@ import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.ao.Column;
 import org.ujorm.tools.web.ao.HttpParameter;
-import org.ujorm.tools.web.table.TableBuilder;
+import org.ujorm.tools.web.report.ReportBuilder;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.*;
 import static net.ponec.demo.servlet.PlainHotelServlet.Constants.*;
 import static org.ujorm.tools.xml.AbstractWriter.NBSP;
 
 /**
- * A simple example of the TableBuilder class of Ujorm framework inside a Servlet.
+ * A simple example of the ReportBuilder class of Ujorm framework inside a Servlet.
  *
  * @author Pavel Ponec
  */
@@ -56,7 +56,7 @@ public class PlainHotelServlet extends HttpServlet {
             final HttpServletRequest input,
             final HttpServletResponse output) throws ServletException, IOException {
 
-        new TableBuilder<Hotel>("Simple Hotel Report")
+        new ReportBuilder<Hotel>("Simple Hotel Report")
                 .add(hotel -> hotel.getName(), "Hotel", NAME).sortable(true)
                 .add(hotel -> hotel.getCity().getName(), "City", CITY).sortable()
                 .add(hotel -> hotel.getStreet(), "Street").sortable()
