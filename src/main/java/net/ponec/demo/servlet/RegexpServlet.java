@@ -66,7 +66,7 @@ public class RegexpServlet extends HttpServlet {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED, false);
             Message msg = highlight(input);
-            try (Element body = html.getBody()) {
+            try (Element body = html.addBody()) {
                 body.addHeading(html.getTitle());
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
                 try (Element form = body.addForm()

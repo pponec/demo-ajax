@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import org.ujorm.tools.common.StreamUtils;
-import org.ujorm.tools.web.report.ReportBuilder;
+import org.ujorm.tools.web.table.GridBuilder;
 
 /**
  *
@@ -58,7 +58,7 @@ public class HotelService {
      * @param cityPattern a ioty pattern
      * @return
      */
-    public Stream<Hotel> selectHotels(ReportBuilder<Hotel> builder,
+    public Stream<Hotel> selectHotels(GridBuilder<Hotel> builder,
             int limit,
             @Nonnull String namePattern,
             @Nonnull String cityPattern) {

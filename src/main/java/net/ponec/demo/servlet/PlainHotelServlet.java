@@ -93,9 +93,7 @@ public class PlainHotelServlet extends HttpServlet {
      */
     enum Attrib implements HttpParameter {
         NAME,
-        CITY,
-        LIMIT { @Override public String defaultValue() { return "" + DEFAULT_ROW_LIMIT; }
-        };
+        CITY;
 
         @Override
         public String toString() {
@@ -106,7 +104,7 @@ public class PlainHotelServlet extends HttpServlet {
     /** Servlet constants */
     static class Constants {
         /** Row limit */
-        static final int DEFAULT_ROW_LIMIT = 15;
+        static final int DEFAULT_ROW_LIMIT = 10;
         /** CSS for inputs */
         static final String CSS_INPUT = "form-control";
         /** Help image */

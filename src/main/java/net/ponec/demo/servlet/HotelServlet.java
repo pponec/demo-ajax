@@ -64,7 +64,7 @@ public class HotelServlet extends HttpServlet {
                 .add(Hotel::getPrice, "Price").sortable()
                 .add(Hotel::getCurrency, "Currency")
                 .add(Hotel::getPhone, "Phone")
-                .add(starsColumn(), "Stars").sortable()
+                .add(starColumn(), "Stars").sortable()
                 .addColumn(
                         (e, v) -> e.addLinkedText(v.getHomePage(), "link"), // Column
                         (e) -> e.addText("Home page", " ").addImage(Constants.HELP_IMG, "Help")) // Title
@@ -78,8 +78,8 @@ public class HotelServlet extends HttpServlet {
                                 CITY.of(input)));
     }
 
-    /** Create a stars Column */
-    protected Column<Hotel> starsColumn() {
+    /** Create a column of hotel stars */
+    protected Column<Hotel> starColumn() {
         return new Column<Hotel>() {
             @Override
             public void write(Element e, Hotel hotel) {
@@ -109,8 +109,7 @@ public class HotelServlet extends HttpServlet {
     enum Attrib implements HttpParameter {
         NAME,
         CITY,
-        LIMIT { @Override public String defaultValue() { return DEFAULT_ROW_LIMIT.toString(); }
-        };
+        LIMIT { @Override public String defaultValue() { return DEFAULT_ROW_LIMIT.toString(); }};
 
         @Override
         public String toString() {
