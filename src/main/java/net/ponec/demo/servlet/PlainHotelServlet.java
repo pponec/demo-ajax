@@ -77,7 +77,7 @@ public class PlainHotelServlet extends HttpServlet {
      * @param namePattern A hotel name pattern
      * @param cityPattern A city name pattern
      */
-    public Stream<Hotel> selectHotels(GridBuilder<Hotel> builder,
+    private Stream<Hotel> selectHotels(GridBuilder<Hotel> builder,
             int limit,
             @Nonnull String namePattern,
             @Nonnull String cityPattern) {
@@ -95,9 +95,7 @@ public class PlainHotelServlet extends HttpServlet {
      */
     enum Attrib implements HttpParameter {
         NAME,
-        CITY,
-        LIMIT { @Override public String defaultValue() { return "" + DEFAULT_ROW_LIMIT; }
-        };
+        CITY;
 
         @Override
         public String toString() {
