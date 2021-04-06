@@ -1,29 +1,30 @@
 package net.ponec.demo.service;
 
+import java.io.BufferedReader;
 import net.ponec.demo.model.Hotel;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-import org.ujorm.tools.common.StreamUtils;
-import org.ujorm.tools.web.table.GridBuilder;
 
 /**
  *
  * @author Pavel Ponec
  */
-public class HotelService {
+public class HotelProvider {
 
     /** Logger */
-    private static final Logger LOGGER = Logger.getLogger(HotelService.class.toString());
+    private static final Logger LOGGER = Logger.getLogger(HotelProvider.class.toString());
     private static final String HOTELS_CSV = "/csv/ResourceHotel.csv";
 
-    private final CityResourceService cityService = new CityResourceService();
+    private final CityResourceProvider cityService = new CityResourceProvider();
 
     private List<Hotel> hotels = null;
 
@@ -64,8 +65,8 @@ public class HotelService {
      * , Hotel.ACTIVE
      * @return
      */
-    protected Stream<Hotel> loadHotels(URL url) throws IOException {
-        return StreamUtils.rowsOfUrl(url)
+    public Stream<Hotel> loadHotels(URL url) throws IOException {
+        return rowsOfUrl(url)
                 .filter(t -> !t.startsWith("* "))
                 .filter(t -> !t.startsWith("NAME;"))
                 .map(t -> {
@@ -87,6 +88,24 @@ public class HotelService {
                     return hotel;
                 })
                 .filter(t -> t != null);
+    }
+
+    /** Returns a stream of lines form URL resource
+     *
+     * @param url An URL link to a resource
+     * @return The customer is responsible for closing the stream.
+     *         During closing, an IllegalStateException may occur due to an IOException.
+     * @throws IOException
+     */
+    public static Stream<String> rowsOfUrl(final URL url) throws IOException  {
+        final InputStream is = url.openStream();
+        return new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().onClose(() -> {
+            try {
+                is.close();
+            } catch (IOException e) {
+                throw new IllegalStateException("Can't close: " + url, e);
+            }
+        });
     }
 
 }

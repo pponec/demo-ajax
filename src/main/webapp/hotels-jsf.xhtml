@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <h2>Primefaces DataTable example</h2>
+        <h:form>
+            <p:dataTable var="hotel" value="#{hotelBean.hotelList}">
+                <p:column headerText="Hotel" sortBy="#{hotel.name}">
+                    <h:outputText value="#{hotel.name}"/>
+                </p:column>
+
+                <p:column headerText="City" sortBy="#{hotel.city.name}">
+                    <h:outputText value="#{hotel.city.name}"/>
+                </p:column>
+
+                <p:column headerText="Street" sortBy="#{hotel.street}">
+                    <h:outputText value="#{hotel.street}"/>
+                </p:column>
+
+                <p:column headerText="Price" sortBy="#{hotel.price}">
+                    <h:outputText value="#{hotel.price}"/>
+                </p:column>
+
+                <p:column headerText="Currency">
+                    <h:outputText value="#{hotel.currency}"/>
+                </p:column>
+
+                <p:column headerText="Phone" sortBy="#{hotel.phone}">
+                    <h:outputText value="#{hotel.phone}"/>
+                </p:column>
+
+                <p:column headerText="Stars" sortBy="#{hotel.stars}">
+                    <h:outputText value="#{hotel.stars}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <div class="footer">Link to resource</div>
+    </h:body>
+
+</html>

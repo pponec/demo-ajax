@@ -10,27 +10,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-import org.ujorm.tools.common.StreamUtils;
 
 /**
  *
  * @author Pavel Ponec
  */
-public class CityResourceService {
+public class CityResourceProvider {
 
     /** Logger */
-    private static final Logger LOGGER = Logger.getLogger(CityResourceService.class.toString());
+    private static final Logger LOGGER = Logger.getLogger(CityResourceProvider.class.toString());
     private static final String CITY_CSV = "/csv/ResourceCity.csv";
 
     private Map<Integer,City> cityMap = null;
 
-    @Nonnull
     public City getCity(String id) {
         return getCity(Integer.valueOf(id));
     }
 
-    @Nonnull
     public City getCity(Integer id) {
         try {
             final City result = getCityMap().get(id);
@@ -81,7 +77,7 @@ public class CityResourceService {
      */
     protected Stream<City> loadCitys(URL url) throws IOException {
 
-        return StreamUtils.rowsOfUrl(url)
+        return HotelProvider.rowsOfUrl(url)
                 .filter(t -> !t.startsWith("* "))
                 .filter(t -> !t.startsWith("ID;"))
                 .map(t -> {
