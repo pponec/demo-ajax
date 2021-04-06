@@ -17,7 +17,7 @@ import net.ponec.demo.model.Hotel;
 @ViewScoped
 public class HotelBean {
 
-    private int rowLimit = 12;
+    private int rowLimit = 100;
 
     private List<Hotel> hotels = new ArrayList<>();
 
