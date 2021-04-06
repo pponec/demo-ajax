@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- See PrimeFaces tutorial: https://www.primefaces.org/showcase/ui/data/datatable/field.xhtml?jfwid=0837a -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+    <h:head></h:head>
+    <h:body>
+        <h2>Primefaces DataTable example</h2>
+        <h:form>
+            <p:dataTable var="hotel" value="#{hotelBean.hotelList}">
+                <p:column field="name" headerText="Hotel"  />
+                <p:column field="city.name" headerText="City"  />
+                <p:column field="street" headerText="Street" sortable="true" filterable="false" />
+                <p:column field="price" headerText="Price" sortable="true" filterable="false" />
+                <p:column field="currency" headerText="Currency" sortable="false" filterable="false" />
+                <p:column field="phone" headerText="Phone" sortable="false" filterable="false" />
+                <p:column field="stars" headerText="Stars" filterable="false" />
+            </p:dataTable>
+        </h:form>
+        <div class="footer">Link to resource</div>
+    </h:body>
+
+</html>

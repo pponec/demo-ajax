@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import net.ponec.demo.model.Hotel;
 
+/**
+ * See a <a href="https://www.primefaces.org/showcase/ui/data/datatable/field.xhtml?jfwid=0837a">JSF Tutorial</a>
+ * @author Pavel Ponec
+ */
 @ManagedBean
 @ViewScoped
 public class HotelBean {
