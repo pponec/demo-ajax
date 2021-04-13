@@ -10,9 +10,9 @@
     <h:body>
         <h2>Primefaces DataTable example</h2>
         <h:form>
-            <p:dataTable var="hotel" value="#{hotelBean.hotelList}" paginator="false" rows="5">
-                <p:column field="name" headerText="Hotel"  />
-                <p:column field="city.name" headerText="City"  />
+            <p:dataTable var="hotel" value="#{hotelBean.hotelList}" paginator="false" rows="300">
+                <p:column field="name" headerText="Hotel" filterMatchMode="contains"  />
+                <p:column field="city.name" headerText="City" filterMatchMode="contains" />
                 <p:column field="street" headerText="Street" sortable="true" filterable="false" />
                 <p:column field="price" headerText="Price" sortable="true" filterable="false" />
                 <p:column field="currency" headerText="Currency" sortable="false" filterable="false" />
