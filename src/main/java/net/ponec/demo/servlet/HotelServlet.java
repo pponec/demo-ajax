@@ -66,12 +66,12 @@ public class HotelServlet extends HttpServlet {
                 .add(Hotel::getPhone, "Phone")
                 .add(starColumn(), "Stars").sortable()
                 .addColumn(
-                        (e, v) -> e.addLinkedText(v.getHomePage(), "link"), // Column
+                        (e, v) -> e.addLinkedText(v.getHomePage(), "link"), // Data
                         (e) -> e.addText("Home page", " ").addImage(Constants.HELP_IMG, "Help")) // Title
                 .setFormItem(e -> e.addTextInp(LIMIT, LIMIT.of(input), "Limit", CSS_INPUT, LIMIT))
                 .setFooter(e -> printFooter(e))
                 .setHtmlHeader(e -> e.addLink().setHref("/css/hotels.css").setAttr(Html.A_REL, "stylesheet"))
-                .setAjaxEnabled(true)
+                .setAjaxEnabled(true) // Default
                 .build(input, output, builder -> service.selectHotels(builder,
                                 LIMIT.of(input, DEFAULT_ROW_LIMIT),
                                 NAME.of(input),
