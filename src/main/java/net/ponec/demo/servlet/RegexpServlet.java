@@ -37,7 +37,7 @@ import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
 import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
 
 /**
- * A live example of the HtmlElement inside a servlet using a Dom4j library.
+ * A live example of the HtmlElement inside a servlet.
  * @author Pavel Ponec
  * @see {@link https://github.com/pponec/demo-ajax}
  */
