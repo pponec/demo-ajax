@@ -1,7 +1,9 @@
 # Simple AJAX demo based on Java
 
-A demo web application supported an AJAX based on the [Ujorm](https://ujorm.org/) framework and Javascript Vanilla [ES6](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_%E2%80%93_ECMAScript_2015).
+A tiny web application supported an AJAX - based on the [Ujorm](https://ujorm.org/) framework and Javascript Vanilla [ES6](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_%E2%80%93_ECMAScript_2015).
 For more information see the main [servlet code](https://github.com/pponec/demo-ajax/blob/main/src/main/java/net/ponec/demo/servlet/RegexpServlet.java).
+
+The target JAR file has got the <strong>5,18 MB</strong> total (including all libraries).
 
 ### System Requirements:
 

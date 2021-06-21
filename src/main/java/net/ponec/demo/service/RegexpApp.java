@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ponec.demo.servlet;
+package net.ponec.demo.service;
 
-import net.ponec.demo.service.RegexpService;
+
 import net.ponec.demo.model.Message;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.ujorm.tools.web.Element;
@@ -32,20 +30,19 @@ import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
-import static net.ponec.demo.servlet.RegexpServlet.Attrib.*;
-import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
+import static net.ponec.demo.service.RegexpApp.Attrib.*;
+import static net.ponec.demo.service.RegexpApp.Constants.*;
 import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
 
 /**
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
- * 
+ *
  * @author Pavel Ponec
  * @see {@link https://github.com/pponec/demo-ajax}
  */
-@WebServlet("/regexp")
-public class RegexpServlet extends HttpServlet {
+public class RegexpApp {
     /** Logger */
-    private static final Logger LOGGER = Logger.getLogger(RegexpServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RegexpApp.class.getName());
     /** A service */
     private final RegexpService service = new RegexpService();
 
@@ -56,8 +53,7 @@ public class RegexpServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(
+    public void doGet(
             final HttpServletRequest input,
             final HttpServletResponse output)
             throws ServletException, IOException {
@@ -92,8 +88,7 @@ public class RegexpServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest input, HttpServletResponse output)
+    public void doPost(HttpServletRequest input, HttpServletResponse output)
             throws ServletException, IOException {
         if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
             doAjax(input, JsonBuilder.of(input, output, service.getConfig("?"))).close();
