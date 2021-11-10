@@ -38,7 +38,7 @@ import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PAR
 
 /**
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
- * 
+ *
  * @author Pavel Ponec
  * @see {@link https://github.com/pponec/demo-ajax}
  */
@@ -70,15 +70,11 @@ public class RegexpServlet extends HttpServlet {
                 body.addHeading(html.getTitle());
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
                 try (Element form = body.addForm()
-                        .setId(FORM_ID)
                         .setMethod(Html.V_POST).setAction("?")) {
                     form.addInput(CONTROL_CSS)
-                            .setId(REGEXP)
-                            .setName(REGEXP)
-                            .setValue(REGEXP.of(input))
+                            .setNameValue(REGEXP, REGEXP.of(input))
                             .setAttribute(Html.A_PLACEHOLDER, "Regular expression");
                     form.addTextArea(CONTROL_CSS)
-                            .setId(TEXT)
                             .setName(TEXT)
                             .setAttribute(Html.A_PLACEHOLDER, "Plain Text")
                             .addText(TEXT.of(input));
@@ -124,12 +120,9 @@ public class RegexpServlet extends HttpServlet {
             final boolean enabled,
             final boolean isSortable) {
         if (enabled) {
-            new JavaScriptWriter(
-                    "#" + REGEXP,
-                    "#" + TEXT)
+            new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
                     .setSubtitleSelector("." + SUBTITLE_CSS)
-                    .setFormSelector("#" + FORM_ID)
-                    .setSortable(isSortable)
+                    .setFormSelector(Html.FORM)
                     .write(html.getHead());
         }
     }
@@ -142,8 +135,6 @@ public class RegexpServlet extends HttpServlet {
         static final String OUTPUT_CSS = "out";
         /** CSS class name for the output box */
         static final String SUBTITLE_CSS = "subtitle";
-        /** Form identifier */
-        static final String FORM_ID = "form";
         /** Enable AJAX feature */
         static final boolean AJAX_ENABLED = true;
         /** AJAX ready message */
