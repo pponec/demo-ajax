@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.ujorm.tools.common.StreamUtils;
 import org.ujorm.tools.web.table.GridBuilder;
 
@@ -60,8 +60,8 @@ public class HotelService {
      */
     public Stream<Hotel> selectHotels(GridBuilder<Hotel> builder,
             int limit,
-            @Nonnull String namePattern,
-            @Nonnull String cityPattern) {
+            @NotNull String namePattern,
+            @NotNull String cityPattern) {
         final String nameUp = namePattern.toUpperCase();
         final String cityUp = cityPattern.toUpperCase();
         return loadHotelStream()

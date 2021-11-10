@@ -20,7 +20,6 @@ import net.ponec.demo.model.Message;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +33,7 @@ import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
 import static net.ponec.demo.servlet.RegexpServlet.Attrib.*;
 import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
+import org.jetbrains.annotations.NotNull;
 import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
 
 /**
@@ -98,7 +98,7 @@ public class RegexpServlet extends HttpServlet {
         }
     }
 
-    @Nonnull
+    @NotNull
     protected JsonBuilder doAjax(HttpServletRequest input, JsonBuilder output)
             throws ServletException, IOException {
             final Message msg = highlight(input);
@@ -116,7 +116,7 @@ public class RegexpServlet extends HttpServlet {
     }
 
     /** Write a Javascript to a header */
-    protected void writeJavaScript(@Nonnull final HtmlElement html,
+    protected void writeJavaScript(@NotNull final HtmlElement html,
             final boolean enabled,
             final boolean isSortable) {
         if (enabled) {

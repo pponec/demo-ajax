@@ -20,7 +20,7 @@ import org.ujorm.tools.xml.builder.XmlPrinter;
 import org.ujorm.tools.xml.config.XmlConfig;
 
 import java.security.SecureRandom;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
 /**
@@ -65,7 +65,7 @@ public class RegexpService {
     }
 
     /** Create a configuration for a HTML model */
-    public HtmlConfig getConfig(@Nonnull String title) {
+    public HtmlConfig getConfig(@NotNull String title) {
         return HtmlConfig.ofDefault()
         .setTitle(title)
         .setNiceFormat();
