@@ -40,7 +40,7 @@ import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PAR
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
  *
  * @author Pavel Ponec
- * @see {@link https://github.com/pponec/demo-ajax}
+ * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
  */
 @WebServlet("/regexp")
 public class RegexpServlet extends HttpServlet {
@@ -64,7 +64,7 @@ public class RegexpServlet extends HttpServlet {
 
         try (HtmlElement html = HtmlElement.of(input, output, service.getConfig("Regular expression tester"))) {
             html.addCssLink("/css/regexp.css");
-            writeJavaScript(html, AJAX_ENABLED, false);
+            writeJavaScript(html, AJAX_ENABLED);
             Message msg = highlight(input);
             try (Element body = html.addBody()) {
                 body.addHeading(html.getTitle());
@@ -117,12 +117,10 @@ public class RegexpServlet extends HttpServlet {
 
     /** Write a Javascript to a header */
     protected void writeJavaScript(@NotNull final HtmlElement html,
-            final boolean enabled,
-            final boolean isSortable) {
+            final boolean enabled) {
         if (enabled) {
             new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
                     .setSubtitleSelector("." + SUBTITLE_CSS)
-                    .setFormSelector(Html.FORM)
                     .write(html.getHead());
         }
     }
