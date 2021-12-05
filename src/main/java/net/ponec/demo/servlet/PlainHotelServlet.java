@@ -71,23 +71,6 @@ public class PlainHotelServlet extends HttpServlet {
                                 CITY.of(input)));
     }
 
-    /** Create a stars Column */
-    protected Column<Hotel> starsColumn() {
-        return new Column<Hotel>() {
-            @Override
-            public void write(Element e, Hotel hotel) {
-                e.setAttribute(Html.A_TITLE, hotel.getStars()).setAttribute(Html.STYLE, "color: Gold");
-                Stream.generate(() -> "🟊" + NBSP).limit(Math.round(hotel.getStars()))
-                        .forEach(s -> e.addText(s));
-            }
-            /** Implement it for a sortable column only */
-            @Override
-            public Float apply(Hotel hotel) {
-                return hotel.getStars();
-            }
-        };
-    }
-
     /**
      * HTTP attributes
      */
