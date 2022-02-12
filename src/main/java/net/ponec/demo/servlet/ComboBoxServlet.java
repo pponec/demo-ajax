@@ -98,6 +98,7 @@ public class ComboBoxServlet extends HttpServlet {
                 .setName(parameter)
                 .setAttribute("required", true)
                 .setAttribute("onchange", "this.form.submit()");
+        //      .setAttribute("onchange", "javascript:f1.process(null)");
         for (Enum item : type.getEnumConstants()) {
             select.addOption()
                     .setValue(item.name())
