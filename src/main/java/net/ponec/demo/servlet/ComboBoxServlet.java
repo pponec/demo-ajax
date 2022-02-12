@@ -17,6 +17,7 @@ package net.ponec.demo.servlet;
 
 import net.ponec.demo.model.Message;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
@@ -72,7 +73,7 @@ public class ComboBoxServlet extends HttpServlet {
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
                 try (Element form = body.addForm()
                         .setMethod(Html.V_POST).setAction("?")) {
-                    createComboBox(form, MONTH, Month.JANUARY);
+                    createComboBox(form, MONTH, Month.class, MONTH.of(input, "[month]"));
                     form.addTextArea(CONTROL_CSS)
                             .setName(TEXT)
                             .setAttribute(Html.A_PLACEHOLDER, "Plain Text")
@@ -90,15 +91,17 @@ public class ComboBoxServlet extends HttpServlet {
     protected <V extends Enum<V>> void createComboBox(
             @NotNull Element parent,
             @NotNull HttpParameter parameter,
-            @NotNull V value) {
+            @NotNull Class<V> type,
+            @Nullable String value
+    ) {
         final Element select = parent.addSelect()
                 .setName(parameter)
                 .setAttribute("required", true)
                 .setAttribute("onchange", "this.form.submit()");
-        for (Enum item : value.getClass().getEnumConstants()) {
+        for (Enum item : type.getEnumConstants()) {
             select.addOption()
                     .setValue(item.name())
-                    .setAttribute(Html.A_SELECTED, item == value ? Html.A_SELECTED : null)
+                    .setAttribute(Html.A_SELECTED, item.name().equals(value) ? Html.A_SELECTED : null)
                     .addText(item.name());
         }
     }
@@ -107,7 +110,7 @@ public class ComboBoxServlet extends HttpServlet {
     protected void doPost(HttpServletRequest input, HttpServletResponse output)
             throws ServletException, IOException {
         if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
-            doAjax(input, JsonBuilder.of(input, output, getConfig("[month]"))).close();
+            doAjax(input, JsonBuilder.of(input, output, getConfig("?"))).close();
         } else {
             doGet(input, output);
         }
@@ -115,7 +118,7 @@ public class ComboBoxServlet extends HttpServlet {
 
     @NotNull
     protected JsonBuilder doAjax(HttpServletRequest input, JsonBuilder output)
-            throws ServletException, IOException {
+            throws IOException {
             final Message msg = createResultMessage(input);
             output.writeClass(OUTPUT_CSS, e -> e.addElementIf(msg.isError(), Html.SPAN, "error")
                     .addRawText(msg));
@@ -126,7 +129,7 @@ public class ComboBoxServlet extends HttpServlet {
     /** Build a HTML result message */
     protected Message createResultMessage(HttpServletRequest input) {
         return Message.of(
-                MONTH.of(input, "?") + ":",
+                MONTH.of(input, "[Month]") + ":",
                 TEXT.of(input, "?"));
     }
 
