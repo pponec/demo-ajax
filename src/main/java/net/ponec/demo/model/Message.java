@@ -42,6 +42,10 @@ public class Message {
         return error;
     }
 
+    public static Message of(@NotNull final String... text) {
+        return of(String.join(" ", text));
+    }
+
     public static Message of(@NotNull final String text) {
         return new Message(Assert.notNull(text, "text"), false);
     }
