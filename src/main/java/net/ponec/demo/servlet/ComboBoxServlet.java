@@ -94,9 +94,9 @@ public class ComboBoxServlet extends HttpServlet {
             @NotNull Class<V> type,
             @Nullable String value
     ) {
-        final Element select = parent.addSelect()
+        final Element select = parent.addSelect("form-select", "form-select-lg", "mb-3")
                 .setName(parameter)
-                .setAttribute("required", true)
+                .setAttribute("required", "required")
                 .setAttribute("onchange", "this.form.submit()");
         //      .setAttribute("onchange", "javascript:f1.process(null)");
         for (Enum item : type.getEnumConstants()) {
