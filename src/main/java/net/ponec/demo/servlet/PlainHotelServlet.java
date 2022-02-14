@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Pavel Ponec, https://github.com/pponec
+ * Copyright 2020-2022 Pavel Ponec, https://github.com/pponec
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,15 @@ package net.ponec.demo.servlet;
 import net.ponec.demo.service.HotelService;
 import net.ponec.demo.model.Hotel;
 import java.io.IOException;
-import java.util.stream.Stream;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.ujorm.tools.web.Element;
-import org.ujorm.tools.web.Html;
-import org.ujorm.tools.web.ao.Column;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.*;
 import static net.ponec.demo.servlet.PlainHotelServlet.Constants.*;
-import static org.ujorm.tools.xml.AbstractWriter.NBSP;
 
 /**
  * A simple example of the ReportBuilder class of Ujorm framework inside a Servlet.

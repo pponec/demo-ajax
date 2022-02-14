@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Pavel Ponec, https://github.com/pponec
+ * Copyright 2020-2022 Pavel Ponec, https://github.com/pponec
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,12 +62,5 @@ public class RegexpService {
         } catch (Exception | OutOfMemoryError e) {
             return Message.of(e);
         }
-    }
-
-    /** Create a configuration for a HTML model */
-    public HtmlConfig getConfig(@NotNull String title) {
-        return HtmlConfig.ofDefault()
-        .setTitle(title)
-        .setNiceFormat();
     }
 }

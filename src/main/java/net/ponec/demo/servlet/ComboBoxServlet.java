@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Pavel Ponec, https://github.com/pponec/demo-ajax
+ * Copyright 2020-2022 Pavel Ponec, https://github.com/pponec/demo-ajax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class ComboBoxServlet extends HttpServlet {
             final HttpServletResponse output)
             throws ServletException, IOException {
 
-        try (HtmlElement html = HtmlElement.of(input, output, getConfig("Combo-box tester"))) {
+        try (HtmlElement html = HtmlElement.of(input, output, HtmlConfig.ofTitle("Combo-box tester"))) {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED);
             Message msg = createResultMessage(input);
@@ -96,14 +96,12 @@ public class ComboBoxServlet extends HttpServlet {
     ) {
         final Element select = parent.addSelect("form-select", "form-select-lg", "mb-3")
                 .setName(parameter)
-                .setAttribute("required", "required")
-                .setAttribute("onchange", "this.form.submit()");
-        //      .setAttribute("onchange", "javascript:f1.process(null)");
-        for (Enum item : type.getEnumConstants()) {
+                .setAttribute("onchange", "f1.process(null)");
+        for (Enum enumItem : type.getEnumConstants()) {
             select.addOption()
-                    .setValue(item.name())
-                    .setAttribute(Html.A_SELECTED, item.name().equals(value) ? Html.A_SELECTED : null)
-                    .addText(item.name());
+                    .setValue(enumItem.name())
+                    .setAttribute(Html.A_SELECTED, enumItem.name().equals(value) ? Html.A_SELECTED : null)
+                    .addText(enumItem.name());
         }
     }
 
@@ -111,7 +109,7 @@ public class ComboBoxServlet extends HttpServlet {
     protected void doPost(HttpServletRequest input, HttpServletResponse output)
             throws ServletException, IOException {
         if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
-            doAjax(input, JsonBuilder.of(input, output, getConfig("?"))).close();
+            doAjax(input, JsonBuilder.of(input, output)).close();
         } else {
             doGet(input, output);
         }
@@ -130,7 +128,7 @@ public class ComboBoxServlet extends HttpServlet {
     /** Build a HTML result message */
     protected Message createResultMessage(HttpServletRequest input) {
         return Message.of(
-                MONTH.of(input, "[Month]") + ":",
+                MONTH.of(input, "[month]") + ":",
                 TEXT.of(input, "?"));
     }
 
@@ -138,17 +136,10 @@ public class ComboBoxServlet extends HttpServlet {
     protected void writeJavaScript(@NotNull final HtmlElement html,
             final boolean enabled) {
         if (enabled) {
-            new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
-                    .setSubtitleSelector("." + SUBTITLE_CSS)
-                    .write(html.getHead());
+           new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
+                   .setSubtitleSelector("." + SUBTITLE_CSS)
+                   .write(html.getHead());
         }
-    }
-
-    /** Create a configuration for a HTML model */
-    protected HtmlConfig getConfig(@NotNull String title) {
-        return HtmlConfig.ofDefault()
-                .setTitle(title)
-                .setNiceFormat();
     }
 
     /** CSS constants and identifiers */

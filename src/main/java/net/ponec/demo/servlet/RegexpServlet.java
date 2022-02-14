@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2021 Pavel Ponec, https://github.com/pponec/demo-ajax
+ * Copyright 2020-2022 Pavel Ponec, https://github.com/pponec/demo-ajax
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import static net.ponec.demo.servlet.RegexpServlet.Attrib.*;
 import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
 import org.jetbrains.annotations.NotNull;
 import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
+import org.ujorm.tools.xml.config.HtmlConfig;
 
 /**
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
@@ -62,7 +63,7 @@ public class RegexpServlet extends HttpServlet {
             final HttpServletResponse output)
             throws ServletException, IOException {
 
-        try (HtmlElement html = HtmlElement.of(input, output, service.getConfig("Regular expression tester"))) {
+        try (HtmlElement html = HtmlElement.of(input, output, HtmlConfig.ofTitle("Regular expression tester"))) {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED);
             Message msg = highlight(input);
@@ -92,7 +93,7 @@ public class RegexpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest input, HttpServletResponse output)
             throws ServletException, IOException {
         if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
-            doAjax(input, JsonBuilder.of(input, output, service.getConfig("?"))).close();
+            doAjax(input, JsonBuilder.of(input, output)).close();
         } else {
             doGet(input, output);
         }
