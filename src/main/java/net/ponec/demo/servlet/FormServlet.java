@@ -58,7 +58,7 @@ public class FormServlet extends HttpServlet {
                 body.addHeading("Hello, World!");
                 try (Element form = body.addForm("form-inline")) {
                     form.addLabel("control-label").addText("Note:");
-                    form.addInput("form-control", "col-lg-2")
+                    form.addInput("form-control", "col-lg-1")
                             .setNameValue(NOTE, NOTE.of(request));
                     form.addSubmitButton("btn", "btn-primary")
                             .addText("Submit");
