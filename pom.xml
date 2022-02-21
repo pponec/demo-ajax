@@ -13,6 +13,7 @@
         <java.version>1.8</java.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ujorm.versin>2.22-SNAPSHOT</ujorm.versin>
     </properties>
 
     <dependencies>
@@ -21,12 +22,12 @@
         <dependency>
             <groupId>org.ujorm</groupId>
             <artifactId>ujo-web</artifactId>
-            <version>2.21</version>
+            <version>${ujorm.versin}</version>
         </dependency>
         <dependency>
             <groupId>org.ujorm</groupId>
             <artifactId>ujo-tools</artifactId>
-            <version>2.21</version>
+            <version>${ujorm.versin}</version>
         </dependency>
 
         <!-- Static analyzer support -->
