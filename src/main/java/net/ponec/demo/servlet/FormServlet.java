@@ -53,7 +53,7 @@ public class FormServlet extends HttpServlet {
 
         try (HtmlElement html = HtmlElement.niceOf(response, "/css/regexp.css")) {
             try (Element body = html.addBody()) {
-                body.addHeading("Hello, World!");
+                body.addHeading("Simple form");
                 try (Element form = body.addForm("form-inline")) {
                     form.addLabel("control-label").addText("Note:");
                     form.addInput("form-control", "col-lg-1")
