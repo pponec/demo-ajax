@@ -41,7 +41,7 @@ import static net.ponec.demo.servlet.ComboBoxServlet.Constants.*;
 import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
 
 /**
- * A live example of the HtmlElement inside a Servlet using a ujo-web library.
+ * A live example of the HtmlElement inside a Servlet powered by a ujo-web library.
  *
  * @author Pavel Ponec
  * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>

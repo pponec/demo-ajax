@@ -28,16 +28,14 @@ import org.ujorm.tools.web.ao.HttpParameter;
 import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
 
 /**
- * A live example of the HtmlElement inside a Servlet using a ujo-web library.
+ * A simple form element powered by ujo-web library.
  *
  * @author Pavel Ponec
- * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
  */
 @WebServlet("/form-servlet")
 public class FormServlet extends HttpServlet {
     /** Logger */
     private static final Logger LOGGER = Logger.getLogger(FormServlet.class.getName());
-
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -53,7 +51,7 @@ public class FormServlet extends HttpServlet {
             final HttpServletResponse response)
             throws ServletException, IOException {
 
-        try ( HtmlElement html = HtmlElement.niceOf(response, "/css/regexp.css")) {
+        try (HtmlElement html = HtmlElement.niceOf(response, "/css/regexp.css")) {
             try (Element body = html.addBody()) {
                 body.addHeading("Hello, World!");
                 try (Element form = body.addForm("form-inline")) {
