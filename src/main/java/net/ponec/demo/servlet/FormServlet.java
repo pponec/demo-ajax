@@ -16,8 +16,6 @@
 package net.ponec.demo.servlet;
 
 import java.io.IOException;
-import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,22 +32,9 @@ import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
  */
 @WebServlet("/form-servlet")
 public class FormServlet extends HttpServlet {
-    /** Logger */
-    private static final Logger LOGGER = Logger.getLogger(FormServlet.class.getName());
-
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doGet(
-            final HttpServletRequest request,
-            final HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
 
         try (HtmlElement html = HtmlElement.niceOf(response, "/css/regexp.css")) {
             try (Element body = html.addBody()) {
@@ -68,9 +53,7 @@ public class FormServlet extends HttpServlet {
     /** Servlet attributes */
     enum Attrib implements HttpParameter {
         NOTE;
-
-        @Override
-        public String toString() {
+        @Override public String toString() {
             return name().toLowerCase();
         }
     }
