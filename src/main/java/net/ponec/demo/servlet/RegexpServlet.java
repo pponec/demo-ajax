@@ -15,27 +15,24 @@
  */
 package net.ponec.demo.servlet;
 
-import net.ponec.demo.service.RegexpService;
 import net.ponec.demo.model.Message;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import net.ponec.demo.service.RegexpService;
+import org.jetbrains.annotations.NotNull;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
-import static net.ponec.demo.servlet.RegexpServlet.Attrib.*;
-import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
-import org.jetbrains.annotations.NotNull;
-import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
+import org.ujorm.tools.web.request.RContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+import java.util.logging.Logger;
+import static net.ponec.demo.servlet.RegexpServlet.Attrib.REGEXP;
+import static net.ponec.demo.servlet.RegexpServlet.Attrib.TEXT;
+import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
 
 /**
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
@@ -44,7 +41,7 @@ import org.ujorm.tools.xml.config.HtmlConfig;
  * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
  */
 @WebServlet("/regexp")
-public class RegexpServlet extends HttpServlet {
+public class RegexpServlet extends AbstractServlet {
     /** Logger */
     private static final Logger LOGGER = Logger.getLogger(RegexpServlet.class.getName());
     /** A service */
@@ -52,57 +49,37 @@ public class RegexpServlet extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param context servlet request
      */
     @Override
-    protected void doGet(
-            final HttpServletRequest input,
-            final HttpServletResponse output)
-            throws ServletException, IOException {
+    protected void doGet(RContext context) {
 
-        try (HtmlElement html = HtmlElement.of(input, output, HtmlConfig.ofTitle("Regular expression tester"))) {
+        try (HtmlElement html = HtmlElement.of(context, HtmlConfig.ofTitle("Regular expression tester"))) {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED);
-            Message msg = highlight(input);
+            Message msg = highlight(context);
             try (Element body = html.addBody()) {
                 body.addHeading(html.getTitle());
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
                 try (Element form = body.addForm()
                         .setMethod(Html.V_POST).setAction("?")) {
                     form.addInput(CONTROL_CSS)
-                            .setNameValue(REGEXP, REGEXP.of(input))
+                            .setNameValue(REGEXP, REGEXP.of(context))
                             .setAttribute(Html.A_PLACEHOLDER, "Regular expression");
                     form.addTextArea(CONTROL_CSS)
                             .setName(TEXT)
                             .setAttribute(Html.A_PLACEHOLDER, "Plain Text")
-                            .addText(TEXT.of(input));
+                            .addText(TEXT.of(context));
                     form.addDiv().addButton("btn", "btn-primary").addText("Evaluate");
                     form.addDiv(CONTROL_CSS, OUTPUT_CSS).addRawText(msg);
                 }
             }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Internal server error", e);
-            output.setStatus(500);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest input, HttpServletResponse output)
-            throws ServletException, IOException {
-        if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
-            doAjax(input, JsonBuilder.of(input, output)).close();
-        } else {
-            doGet(input, output);
         }
     }
 
     @NotNull
-    protected JsonBuilder doAjax(HttpServletRequest input, JsonBuilder output)
-            throws ServletException, IOException {
-            final Message msg = highlight(input);
+    protected JsonBuilder doAjax(RContext context, JsonBuilder output) throws IOException {
+            final Message msg = highlight(context);
             output.writeClass(OUTPUT_CSS, e -> e.addElementIf(msg.isError(), Html.SPAN, "error")
                     .addRawText(msg));
             output.writeClass(SUBTITLE_CSS, AJAX_READY_MSG);
@@ -110,7 +87,7 @@ public class RegexpServlet extends HttpServlet {
     }
 
     /** Build a HTML result */
-    protected Message highlight(HttpServletRequest input) {
+    protected Message highlight(RContext input) {
         return service.highlight(
                 TEXT.of(input, ""),
                 REGEXP.of(input, ""));

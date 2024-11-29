@@ -24,21 +24,18 @@ import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
+import org.ujorm.tools.web.request.RContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Month;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static net.ponec.demo.servlet.ComboBoxServlet.Attrib.*;
+import static net.ponec.demo.servlet.ComboBoxServlet.Attrib.MONTH;
+import static net.ponec.demo.servlet.ComboBoxServlet.Attrib.TEXT;
 import static net.ponec.demo.servlet.ComboBoxServlet.Constants.*;
-import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PARAM;
 
 /**
  * A live example of the HtmlElement inside a Servlet powered by a ujo-web library.
@@ -47,44 +44,35 @@ import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PAR
  * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
  */
 @WebServlet("/combo-box")
-public class ComboBoxServlet extends HttpServlet {
+public class ComboBoxServlet extends AbstractServlet {
     /** Logger */
     private static final Logger LOGGER = Logger.getLogger(ComboBoxServlet.class.getName());
 
     /**
      * Handles the HTTP <code>GET</code> method.
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param context servlet request context
      */
     @Override
-    protected void doGet(
-            final HttpServletRequest input,
-            final HttpServletResponse output)
-            throws ServletException, IOException {
+    public void doGet(RContext context) {
 
-        try (HtmlElement html = HtmlElement.of(input, output, HtmlConfig.ofTitle("Combo-box tester"))) {
+        try (HtmlElement html = HtmlElement.of(context, HtmlConfig.ofTitle("Combo-box tester"))) {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED);
-            Message msg = createResultMessage(input);
+            Message msg = createResultMessage(context);
             try (Element body = html.addBody()) {
                 body.addHeading(html.getTitle());
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
                 try (Element form = body.addForm()
                         .setMethod(Html.V_POST).setAction("?")) {
-                    createComboBox(form, MONTH, Month.class, MONTH.of(input, "[month]"));
+                    createComboBox(form, MONTH, Month.class, MONTH.of(context, "[month]"));
                     form.addTextArea(CONTROL_CSS)
                             .setName(TEXT)
                             .setAttribute(Html.A_PLACEHOLDER, "Plain Text")
-                            .addText(TEXT.of(input));
+                            .addText(TEXT.of(context));
                     form.addDiv().addButton("btn", "btn-primary").addText("Evaluate");
                     form.addDiv(CONTROL_CSS, OUTPUT_CSS).addRawText(msg);
                 }
             }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Internal server error", e);
-            output.setStatus(500);
         }
     }
 
@@ -105,20 +93,10 @@ public class ComboBoxServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest input, HttpServletResponse output)
-            throws ServletException, IOException {
-        if (DEFAULT_AJAX_REQUEST_PARAM.of(input, false)) {
-            doAjax(input, JsonBuilder.of(input, output)).close();
-        } else {
-            doGet(input, output);
-        }
-    }
-
     @NotNull
-    protected JsonBuilder doAjax(HttpServletRequest input, JsonBuilder output)
+    protected JsonBuilder doAjax(RContext context, JsonBuilder output)
             throws IOException {
-            final Message msg = createResultMessage(input);
+            final Message msg = createResultMessage(context);
             output.writeClass(OUTPUT_CSS, e -> e.addElementIf(msg.isError(), Html.SPAN, "error")
                     .addRawText(msg));
             output.writeClass(SUBTITLE_CSS, AJAX_READY_MSG);
@@ -126,10 +104,10 @@ public class ComboBoxServlet extends HttpServlet {
     }
 
     /** Build a HTML result message */
-    protected Message createResultMessage(HttpServletRequest input) {
+    protected Message createResultMessage(RContext context) {
         return Message.of(
-                MONTH.of(input, "[month]") + ":",
-                TEXT.of(input, "?"));
+                MONTH.of(context, "[month]") + ":",
+                TEXT.of(context, "?"));
     }
 
     /** Write a Javascript to a header */

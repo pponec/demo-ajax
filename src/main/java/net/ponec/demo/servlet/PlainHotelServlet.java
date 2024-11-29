@@ -15,18 +15,19 @@
  */
 package net.ponec.demo.servlet;
 
-import net.ponec.demo.service.HotelService;
 import net.ponec.demo.model.Hotel;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import net.ponec.demo.service.HotelService;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
-import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.*;
-import static net.ponec.demo.servlet.PlainHotelServlet.Constants.*;
+import org.ujorm.tools.web.request.RContext;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.CITY;
+import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.NAME;
+import static net.ponec.demo.servlet.PlainHotelServlet.Constants.DEFAULT_ROW_LIMIT;
+import static net.ponec.demo.servlet.PlainHotelServlet.Constants.HOTELBASE;
 
 /**
  * A simple example of the ReportBuilder class of Ujorm framework inside a Servlet.
@@ -34,22 +35,17 @@ import static net.ponec.demo.servlet.PlainHotelServlet.Constants.*;
  * @author Pavel Ponec
  */
 @WebServlet("/plainHotels")
-public class PlainHotelServlet extends HttpServlet {
+public class PlainHotelServlet extends AbstractServlet {
     /** A hotel service */
     private final HotelService service = new HotelService();
 
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param context servlet request context
      */
     @Override
-    protected void doGet(
-            final HttpServletRequest input,
-            final HttpServletResponse output) throws ServletException, IOException {
+    protected void doGet(RContext context) {
 
         new ReportBuilder<Hotel>("Simple Hotel Report")
                 .add(hotel -> hotel.getName(), "Hotel", NAME).sortable(true)
@@ -60,10 +56,10 @@ public class PlainHotelServlet extends HttpServlet {
                 .add(hotel -> hotel.getPhone(), "Phone")
                 .add(hotel -> hotel.getStars(), "Stars").sortable()
                 .setFooter(e -> e.addText("Data source: ").addLinkedText(HOTELBASE, HOTELBASE))
-                .build(input, output, builder -> service.selectHotels(builder,
+                .build(context, builder -> service.selectHotels(builder,
                                 DEFAULT_ROW_LIMIT,
-                                NAME.of(input),
-                                CITY.of(input)));
+                                NAME.of(context),
+                                CITY.of(context)));
     }
 
     /**
@@ -97,15 +93,10 @@ public class PlainHotelServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param context servlet request context
      */
     @Override
-    protected void doPost(
-            final HttpServletRequest input,
-            final HttpServletResponse output) throws ServletException, IOException {
-        doGet(input, output);
+    protected void doPost(RContext context) {
+        doGet(context);
     }
 }

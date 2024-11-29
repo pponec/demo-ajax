@@ -15,14 +15,12 @@
  */
 package net.ponec.demo.servlet;
 
-import java.io.IOException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ao.HttpParameter;
+import org.ujorm.tools.web.request.RContext;
+import javax.servlet.annotation.WebServlet;
+
 import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
 
 /**
@@ -31,18 +29,17 @@ import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
  * @author Pavel Ponec
  */
 @WebServlet("/form-servlet")
-public class FormServlet extends HttpServlet {
+public class FormServlet extends AbstractServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected void doGet(RContext context)  {
 
-        try (HtmlElement html = HtmlElement.niceOf(response, "/css/regexp.css")) {
+        try (HtmlElement html = HtmlElement.niceOf(getClass().getSimpleName(), context, "/css/regexp.css")) {
             try (Element body = html.addBody()) {
                 body.addHeading("Simple form");
                 try (Element form = body.addForm("form-inline")) {
                     form.addLabel("control-label").addText("Note:");
                     form.addInput("form-control", "col-lg-1")
-                            .setNameValue(NOTE, NOTE.of(request));
+                            .setNameValue(NOTE, NOTE.of(context));
                     form.addSubmitButton("btn", "btn-primary")
                             .addText("Submit");
                 }

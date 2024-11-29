@@ -10,10 +10,10 @@
     <name>AjaxDemoElement</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ujorm.versin>2.22</ujorm.versin>
+        <ujorm.versin>2.26</ujorm.versin>
     </properties>
 
     <dependencies>
@@ -22,12 +22,7 @@
         <dependency>
             <groupId>org.ujorm</groupId>
             <artifactId>ujo-web</artifactId>
-            <version>${ujorm.versin}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ujorm</groupId>
-            <artifactId>ujo-tools</artifactId>
-            <version>${ujorm.versin}</version>
+            <version>2.26</version>
         </dependency>
 
         <!-- Static analyzer support -->
@@ -105,7 +100,7 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.4.14.v20181114</version>
+                <version>9.4.46.v20220331</version>
                 <configuration>
                     <httpConnector>
                         <port>8080</port>
@@ -116,6 +111,11 @@
                     </webApp>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
             </plugin>
         </plugins>
     </build>

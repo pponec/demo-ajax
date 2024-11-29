@@ -15,22 +15,22 @@
  */
 package net.ponec.demo.servlet;
 
-import net.ponec.demo.service.HotelService;
 import net.ponec.demo.model.Hotel;
-import java.io.IOException;
-import java.util.stream.Stream;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import net.ponec.demo.service.HotelService;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.ao.Column;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
+import org.ujorm.tools.web.request.RContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import java.io.IOException;
+import java.util.stream.Stream;
+
 import static net.ponec.demo.servlet.HotelServlet.Attrib.*;
-import static net.ponec.demo.servlet.HotelServlet.Constants.*;
+import static net.ponec.demo.servlet.HotelServlet.Constants.CSS_INPUT;
+import static net.ponec.demo.servlet.HotelServlet.Constants.DEFAULT_ROW_LIMIT;
 import static org.ujorm.tools.xml.AbstractWriter.NBSP;
 
 /**
@@ -39,22 +39,17 @@ import static org.ujorm.tools.xml.AbstractWriter.NBSP;
  * @author Pavel Ponec
  */
 @WebServlet("/hotels")
-public class HotelServlet extends HttpServlet {
+public class HotelServlet extends AbstractServlet {
     /** A hotel service */
     private final HotelService service = new HotelService();
 
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param context servlet request context
      */
     @Override
-    protected void doGet(
-            final HttpServletRequest input,
-            final HttpServletResponse output) throws ServletException, IOException {
+    protected void doGet(RContext context) {
 
         new ReportBuilder<Hotel>("Common Hotel Report")
                 .addOrder("Ord.")
@@ -68,14 +63,14 @@ public class HotelServlet extends HttpServlet {
                 .addColumn(
                         (e, v) -> e.addLinkedText(v.getHomePage(), "link"), // Data
                         (e) -> e.addText("Home page", " ").addImage(Constants.HELP_IMG, "Help")) // Title
-                .setFormItem(e -> e.addTextInp(LIMIT, LIMIT.of(input), "Limit", CSS_INPUT, LIMIT))
+                .setFormItem(e -> e.addTextInp(LIMIT, LIMIT.of(context), "Limit", CSS_INPUT, LIMIT))
                 .setFooter(e -> printFooter(e))
                 .setHtmlHeader(e -> e.addLink().setHref("/css/hotels.css").setAttr(Html.A_REL, "stylesheet"))
                 .setAjaxEnabled(true) // Default
-                .build(input, output, builder -> service.selectHotels(builder,
-                                LIMIT.of(input, DEFAULT_ROW_LIMIT),
-                                NAME.of(input),
-                                CITY.of(input)));
+                .build(context, builder -> service.selectHotels(builder,
+                                LIMIT.of(context, DEFAULT_ROW_LIMIT),
+                                NAME.of(context),
+                                CITY.of(context)));
     }
 
     /** Create a column of hotel stars */
@@ -117,6 +112,16 @@ public class HotelServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param context servlet request context
+     */
+    @Override
+    protected void doPost(final RContext context) {
+        doGet(context);
+    }
+
     /** Servlet constants */
     static class Constants {
         /** Row limit */
@@ -132,18 +137,4 @@ public class HotelServlet extends HttpServlet {
                 + "http://api.hotelsbase.org/documentation.php";
     }
 
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param input servlet request
-     * @param output servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(
-            final HttpServletRequest input,
-            final HttpServletResponse output) throws ServletException, IOException {
-        doGet(input, output);
-    }
 }
