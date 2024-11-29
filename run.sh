@@ -4,6 +4,6 @@
 set -e
 cd "$(dirname $0)"
 
-sh mvnw clean install jetty:run -DskipTests
+sh ./mvnw clean install jetty:run -DskipTests
 
 # EOF
