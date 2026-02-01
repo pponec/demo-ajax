@@ -13,7 +13,7 @@
         <java.version>17</java.version>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ujorm.versin>2.26</ujorm.versin>
+        <ujorm.version>2.30-SNAPSHOT</ujorm.version>
     </properties>
 
     <dependencies>
@@ -22,7 +22,20 @@
         <dependency>
             <groupId>org.ujorm</groupId>
             <artifactId>ujo-web</artifactId>
-            <version>2.26</version>
+            <version>${ujorm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ujorm</groupId>
+            <artifactId>ujo-converter</artifactId>
+            <version>${ujorm.version}</version>
+        </dependency>
+
+        <!-- Html5 Parser -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.17.2</version>
         </dependency>
 
         <!-- Static analyzer support -->
@@ -46,6 +59,14 @@
             <version>5.7.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

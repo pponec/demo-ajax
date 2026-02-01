@@ -22,10 +22,9 @@ import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.ao.Column;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
-import org.ujorm.tools.web.request.RContext;
-import javax.servlet.ServletException;
+import org.ujorm.tools.web.request.HttpContext;
+
 import javax.servlet.annotation.WebServlet;
-import java.io.IOException;
 import java.util.stream.Stream;
 
 import static net.ponec.demo.servlet.HotelServlet.Attrib.*;
@@ -49,7 +48,7 @@ public class HotelServlet extends AbstractServlet {
      * @param context servlet request context
      */
     @Override
-    protected void doGet(RContext context) {
+    protected void doGet(HttpContext context) {
 
         new ReportBuilder<Hotel>("Common Hotel Report")
                 .addOrder("Ord.")
@@ -59,6 +58,8 @@ public class HotelServlet extends AbstractServlet {
                 .add(Hotel::getPrice, "Price").sortable()
                 .add(Hotel::getCurrency, "Currency")
                 .add(Hotel::getPhone, "Phone")
+                .add(Hotel::getStars, "Start")
+                .add(Hotel::getHomePage, "Web")
                 .add(starColumn(), "Stars").sortable()
                 .addColumn(
                         (e, v) -> e.addLinkedText(v.getHomePage(), "link"), // Data
@@ -118,7 +119,7 @@ public class HotelServlet extends AbstractServlet {
      * @param context servlet request context
      */
     @Override
-    protected void doPost(final RContext context) {
+    protected void doPost(final HttpContext context) {
         doGet(context);
     }
 

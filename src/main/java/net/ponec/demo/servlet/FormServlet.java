@@ -15,10 +15,12 @@
  */
 package net.ponec.demo.servlet;
 
+import org.ujorm.tools.web.AbstractHtmlElement;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ao.HttpParameter;
-import org.ujorm.tools.web.request.RContext;
+import org.ujorm.tools.web.request.HttpContext;
+
 import javax.servlet.annotation.WebServlet;
 
 import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
@@ -31,9 +33,9 @@ import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
 @WebServlet("/form-servlet")
 public class FormServlet extends AbstractServlet {
     @Override
-    protected void doGet(RContext context)  {
+    protected void doGet(HttpContext context)  {
 
-        try (HtmlElement html = HtmlElement.niceOf(getClass().getSimpleName(), context, "/css/regexp.css")) {
+        try (HtmlElement html = AbstractHtmlElement.niceOf(getClass().getSimpleName(), context, "/css/regexp.css")) {
             try (Element body = html.addBody()) {
                 body.addHeading("Simple form");
                 try (Element form = body.addForm("form-inline")) {

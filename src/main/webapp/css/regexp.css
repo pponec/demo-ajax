@@ -7,10 +7,26 @@
 
 body { margin: 5px 20px; background-color: #f3f6f7;}
 h1, h2 { color: SteelBlue;}
-ul { width: 500px; margin-top: 2em;}
-.subtitle{ font-size: 10px; color: silver;}
 textarea { height: 120px; margin: 3px 0;}
-.out { min-height: 100px; margin-top: 10px; height: inherit; white-space: pre-wrap;}
+ul { width: 500px; margin-top: 2em;}
+.form-control { margin-bottom: 0;}
+.btn { margin: 0.5em 0.5em 0.5em 0; }
+.btn.copy { background-color: lightgray;}
+.subtitle{ font-size: 10px; color: silver;}
+.out, .error { min-height: 100px; margin-top: 10px; height: inherit; white-space: pre-wrap; background-color: white;}
+.error   { color: red;}
 .out span { background-color: yellow;}
-.out .error { background-color: white; color: red;}
 .footer, .footer a { color: silver; font-style: italic;}
+.warning { color: #784646; font-family: sans-serif; }
+
+label.box-style {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+label.box-style input[type="checkbox"] {
+    transform: translateY(1px);
+}
+label.box-style::after {
+    content: "";
+}

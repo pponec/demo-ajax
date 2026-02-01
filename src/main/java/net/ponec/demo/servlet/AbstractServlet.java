@@ -16,16 +16,16 @@
 package net.ponec.demo.servlet;
 
 import org.jetbrains.annotations.NotNull;
+import org.ujorm.tools.web.AbstractHtmlElement;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.json.JsonBuilder;
-import org.ujorm.tools.web.request.RContext;
+import org.ujorm.tools.web.request.HttpContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +50,7 @@ public abstract class AbstractServlet extends HttpServlet {
             final HttpServletRequest request,
             final HttpServletResponse response) throws IOException {
         try {
-            doGet(RContext.ofServlet(request, response));
+            doGet(HttpContext.ofServlet(request, response));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             int httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
@@ -65,21 +65,22 @@ public abstract class AbstractServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param requestContext servlet request and response
-     * @throws Exception if a servlet-specific error occurs
      */
-    abstract protected void doGet(RContext requestContext);
+    abstract protected void doGet(HttpContext requestContext);
 
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param input servlet request
      * @param output servlet response
-     * @throws IOException if an I/O error occurs
      */
     protected final void doPost(HttpServletRequest input, HttpServletResponse output) {
-        Map<String, String[]> map = input.getParameterMap();
-        LOGGER.info("" + map);
+        final boolean logParameters = false;
         try {
-            doPost(RContext.ofServlet(input, output));
+            if (logParameters) {
+                Map<String, String[]> map = input.getParameterMap();
+                LOGGER.info("" + map);
+            }
+            doPost(HttpContext.ofServlet(input, output));
         } catch (Exception e) {
             int httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             output.setStatus(httpStatus, "Internal error");
@@ -93,7 +94,7 @@ public abstract class AbstractServlet extends HttpServlet {
      * @param context servlet response
      * @throws Exception if an I/O error occurs
      */
-    protected void doPost(RContext context) throws Exception {
+    protected void doPost(HttpContext context) throws Exception {
         if (DEFAULT_AJAX_REQUEST_PARAM.of(context, false)) {
             doAjax(context, JsonBuilder.of(context, (HtmlConfig) HtmlConfig.ofEmptyElement()
                     .setNewLine(" ")))
@@ -104,15 +105,13 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     @NotNull
-    protected JsonBuilder doAjax(RContext context, JsonBuilder output) throws Exception {
+    protected JsonBuilder doAjax(HttpContext context, JsonBuilder output) throws Exception {
         return output;
     }
 
     /** Create new HTML element */
-    protected @NotNull HtmlElement getHtmlElement(
-            RContext context,
-            HtmlConfig config) throws UnsupportedEncodingException {
-        return HtmlElement.of(context, config);
+    protected @NotNull HtmlElement getHtmlElement( HttpContext context, HtmlConfig config)  {
+        return AbstractHtmlElement.of(context, config);
     }
 
 }

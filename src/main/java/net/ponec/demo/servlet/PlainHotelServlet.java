@@ -19,11 +19,8 @@ import net.ponec.demo.model.Hotel;
 import net.ponec.demo.service.HotelService;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
-import org.ujorm.tools.web.request.RContext;
-
-import javax.servlet.ServletException;
+import org.ujorm.tools.web.request.HttpContext;
 import javax.servlet.annotation.WebServlet;
-import java.io.IOException;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.CITY;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.NAME;
 import static net.ponec.demo.servlet.PlainHotelServlet.Constants.DEFAULT_ROW_LIMIT;
@@ -45,7 +42,7 @@ public class PlainHotelServlet extends AbstractServlet {
      * @param context servlet request context
      */
     @Override
-    protected void doGet(RContext context) {
+    protected void doGet(HttpContext context) {
 
         new ReportBuilder<Hotel>("Simple Hotel Report")
                 .add(hotel -> hotel.getName(), "Hotel", NAME).sortable(true)
@@ -96,7 +93,7 @@ public class PlainHotelServlet extends AbstractServlet {
      * @param context servlet request context
      */
     @Override
-    protected void doPost(RContext context) {
+    protected void doPost(HttpContext context) {
         doGet(context);
     }
 }

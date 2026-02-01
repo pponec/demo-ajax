@@ -50,8 +50,9 @@ public class Message {
         return new Message(Assert.notNull(text, "text"), false);
     }
 
-    public static Message of(@NotNull Throwable e) {
-        String text = String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage());
+    public static Message of(@NotNull Throwable e, String... message) {
+        String msg = message.length > 0 ? String.join(" ", message) : e.getMessage();
+        String text = String.format("%s: %s", e.getClass().getSimpleName(), msg);
         return new Message(text, true);
     }
 

@@ -18,18 +18,21 @@ package net.ponec.demo.servlet;
 import net.ponec.demo.model.Message;
 import net.ponec.demo.service.RegexpService;
 import org.jetbrains.annotations.NotNull;
+import org.ujorm.tools.web.AbstractHtmlElement;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
-import org.ujorm.tools.web.request.RContext;
+import org.ujorm.tools.web.request.HttpContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.logging.Logger;
+
+import static net.ponec.demo.servlet.ElementConverterServlet.Constants.CONTROL_CSS;
+import static net.ponec.demo.servlet.ElementConverterServlet.Constants.ERROR_CSS;
 import static net.ponec.demo.servlet.RegexpServlet.Attrib.REGEXP;
 import static net.ponec.demo.servlet.RegexpServlet.Attrib.TEXT;
 import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
@@ -46,16 +49,17 @@ public class RegexpServlet extends AbstractServlet {
     private static final Logger LOGGER = Logger.getLogger(RegexpServlet.class.getName());
     /** A service */
     private final RegexpService service = new RegexpService();
+    /** Max length of the text area */
+    private final int inputMaxLength = 100_000;
 
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param context servlet request
      */
     @Override
-    protected void doGet(RContext context) {
-
-        try (HtmlElement html = HtmlElement.of(context, HtmlConfig.ofTitle("Regular expression tester"))) {
-            html.addCssLink("/css/regexp.css");
+    protected void doGet(HttpContext context) {
+        var title = "Regular expression tester";
+        try (HtmlElement html = AbstractHtmlElement.of(title, context, "/css/regexp.css")) {
             writeJavaScript(html, AJAX_ENABLED);
             Message msg = highlight(context);
             try (Element body = html.addBody()) {
@@ -69,25 +73,27 @@ public class RegexpServlet extends AbstractServlet {
                     form.addTextArea(CONTROL_CSS)
                             .setName(TEXT)
                             .setAttribute(Html.A_PLACEHOLDER, "Plain Text")
+                            .setAttribute(Html.A_MAXLENGTH, inputMaxLength + 1)
                             .addText(TEXT.of(context));
-                    form.addDiv().addButton("btn", "btn-primary").addText("Evaluate");
-                    form.addDiv(CONTROL_CSS, OUTPUT_CSS).addRawText(msg);
+                    form.addDiv().addButton("btn", "btn-primary").addText("⚙️ Evaluate");
+                    form.addDiv(CONTROL_CSS)
+                            .addDiv(msg.isError() ? ERROR_CSS : OUTPUT_CSS, Html.SPAN).addRawText(msg);
                 }
             }
         }
     }
 
     @NotNull
-    protected JsonBuilder doAjax(RContext context, JsonBuilder output) throws IOException {
+    protected JsonBuilder doAjax(HttpContext context, JsonBuilder output) throws IOException {
             final Message msg = highlight(context);
-            output.writeClass(OUTPUT_CSS, e -> e.addElementIf(msg.isError(), Html.SPAN, "error")
-                    .addRawText(msg));
+            output.writeClass(OUTPUT_CSS, e -> e
+                    .addDiv(msg.isError() ? ERROR_CSS : OUTPUT_CSS, Html.SPAN).addRawText(msg));
             output.writeClass(SUBTITLE_CSS, AJAX_READY_MSG);
             return output;
     }
 
     /** Build a HTML result */
-    protected Message highlight(RContext input) {
+    protected Message highlight(HttpContext input) {
         return service.highlight(
                 TEXT.of(input, ""),
                 REGEXP.of(input, ""));
@@ -97,7 +103,7 @@ public class RegexpServlet extends AbstractServlet {
     protected void writeJavaScript(@NotNull final HtmlElement html,
             final boolean enabled) {
         if (enabled) {
-            new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
+            new JavaScriptWriter()
                     .setSubtitleSelector("." + SUBTITLE_CSS)
                     .write(html.getHead());
         }
@@ -109,6 +115,8 @@ public class RegexpServlet extends AbstractServlet {
         static final String CONTROL_CSS = "form-control";
         /** CSS class name for the output box */
         static final String OUTPUT_CSS = "out";
+        /** CSS class name for the error case */
+        static final String ERROR_CSS = "error";
         /** CSS class name for the output box */
         static final String SUBTITLE_CSS = "subtitle";
         /** Enable AJAX feature */

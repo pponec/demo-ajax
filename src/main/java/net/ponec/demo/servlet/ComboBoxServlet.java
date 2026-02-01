@@ -18,13 +18,14 @@ package net.ponec.demo.servlet;
 import net.ponec.demo.model.Message;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ujorm.tools.web.AbstractHtmlElement;
 import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
-import org.ujorm.tools.web.request.RContext;
+import org.ujorm.tools.web.request.HttpContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
 import javax.servlet.ServletException;
@@ -53,9 +54,9 @@ public class ComboBoxServlet extends AbstractServlet {
      * @param context servlet request context
      */
     @Override
-    public void doGet(RContext context) {
+    public void doGet(HttpContext context) {
 
-        try (HtmlElement html = HtmlElement.of(context, HtmlConfig.ofTitle("Combo-box tester"))) {
+        try (HtmlElement html = AbstractHtmlElement.of(context, HtmlConfig.ofTitle("Combo-box tester"))) {
             html.addCssLink("/css/regexp.css");
             writeJavaScript(html, AJAX_ENABLED);
             Message msg = createResultMessage(context);
@@ -94,7 +95,7 @@ public class ComboBoxServlet extends AbstractServlet {
     }
 
     @NotNull
-    protected JsonBuilder doAjax(RContext context, JsonBuilder output)
+    protected JsonBuilder doAjax(HttpContext context, JsonBuilder output)
             throws IOException {
             final Message msg = createResultMessage(context);
             output.writeClass(OUTPUT_CSS, e -> e.addElementIf(msg.isError(), Html.SPAN, "error")
@@ -104,7 +105,7 @@ public class ComboBoxServlet extends AbstractServlet {
     }
 
     /** Build a HTML result message */
-    protected Message createResultMessage(RContext context) {
+    protected Message createResultMessage(HttpContext context) {
         return Message.of(
                 MONTH.of(context, "[month]") + ":",
                 TEXT.of(context, "?"));
@@ -114,7 +115,7 @@ public class ComboBoxServlet extends AbstractServlet {
     protected void writeJavaScript(@NotNull final HtmlElement html,
             final boolean enabled) {
         if (enabled) {
-           new JavaScriptWriter(Html.INPUT, Html.TEXT_AREA)
+           new JavaScriptWriter()
                    .setSubtitleSelector("." + SUBTITLE_CSS)
                    .write(html.getHead());
         }
