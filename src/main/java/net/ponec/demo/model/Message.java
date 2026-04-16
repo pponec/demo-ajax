@@ -16,7 +16,9 @@
 
 package net.ponec.demo.model;
 import org.jetbrains.annotations.NotNull;
-import org.ujorm.tools.Assert;
+
+
+import java.util.Objects;
 
 
 /**
@@ -47,7 +49,7 @@ public class Message {
     }
 
     public static Message of(@NotNull final String text) {
-        return new Message(Assert.notNull(text, "text"), false);
+        return new Message(Objects.requireNonNull(text, "text"), false);
     }
 
     public static Message of(@NotNull Throwable e, String... message) {

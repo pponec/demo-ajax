@@ -28,8 +28,8 @@ import org.ujorm.tools.web.json.JsonBuilder;
 import org.ujorm.tools.web.request.HttpContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.time.Month;
 import java.util.logging.Logger;

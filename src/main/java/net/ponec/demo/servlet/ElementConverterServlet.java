@@ -27,7 +27,7 @@ import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
 import org.ujorm.tools.web.request.HttpContext;
 
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.logging.Logger;
 

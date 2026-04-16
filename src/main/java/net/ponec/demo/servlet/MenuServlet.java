@@ -21,7 +21,7 @@ import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.request.HttpContext;
 
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.WebServlet;
 import java.util.logging.Logger;
 
 /**
@@ -65,6 +65,9 @@ public class MenuServlet extends AbstractServlet {
                     ul.addElement(Html.LI)
                             .addAnchor("/combo-box?text=My+description")
                             .addText("Combo-box");
+                    ul.addElement(Html.LI)
+                            .addAnchor("/tutorial")
+                            .addText("Tutorial");
                     if (showGenerator) {
                         ul.addElement(Html.LI)
                                 .addAnchor("/element")

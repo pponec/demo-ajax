@@ -20,7 +20,7 @@ import net.ponec.demo.service.HotelService;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
 import org.ujorm.tools.web.request.HttpContext;
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.WebServlet;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.CITY;
 import static net.ponec.demo.servlet.PlainHotelServlet.Attrib.NAME;
 import static net.ponec.demo.servlet.PlainHotelServlet.Constants.DEFAULT_ROW_LIMIT;

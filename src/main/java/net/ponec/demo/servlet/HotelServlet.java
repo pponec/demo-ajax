@@ -24,7 +24,7 @@ import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.report.ReportBuilder;
 import org.ujorm.tools.web.request.HttpContext;
 
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.WebServlet;
 import java.util.stream.Stream;
 
 import static net.ponec.demo.servlet.HotelServlet.Attrib.*;

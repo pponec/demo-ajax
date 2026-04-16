@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,11 +22,10 @@ import org.ujorm.tools.web.json.JsonBuilder;
 import org.ujorm.tools.web.request.HttpContext;
 import org.ujorm.tools.xml.config.HtmlConfig;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +37,7 @@ import static org.ujorm.tools.web.ajax.JavaScriptWriter.DEFAULT_AJAX_REQUEST_PAR
  * @author Pavel Ponec
  */
 public abstract class AbstractServlet extends HttpServlet {
+
     /** Logger */
     protected static final Logger LOGGER = Logger.getLogger(AbstractServlet.class.getName());
 
@@ -53,8 +53,8 @@ public abstract class AbstractServlet extends HttpServlet {
             doGet(HttpContext.ofServlet(request, response));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            int httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-            String message = String.format("%s: %s",  e.getClass().getSimpleName(), e.getMessage());
+            var httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            var message = String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage());
 
             response.setStatus(httpStatus);
             response.setHeader("Error-Message", message);
@@ -66,31 +66,31 @@ public abstract class AbstractServlet extends HttpServlet {
      * Handles the HTTP <code>GET</code> method.
      * @param requestContext servlet request and response
      */
-    abstract protected void doGet(HttpContext requestContext);
+    protected abstract void doGet(HttpContext requestContext);
 
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP <code>POST</code> method.
      * @param input servlet request
      * @param output servlet response
      */
     protected final void doPost(HttpServletRequest input, HttpServletResponse output) {
-        final boolean logParameters = false;
+        var logParameters = false;
         try {
             if (logParameters) {
-                Map<String, String[]> map = input.getParameterMap();
+                var map = input.getParameterMap();
                 LOGGER.info("" + map);
             }
             doPost(HttpContext.ofServlet(input, output));
         } catch (Exception e) {
-            int httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-            output.setStatus(httpStatus, "Internal error");
-            String msg = String.format("%s: %s", e.getCause(), e.getMessage());
+            var httpStatus = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+            output.setStatus(httpStatus);
+            var msg = String.format("%s: %s", e.getCause(), e.getMessage());
             LOGGER.log(Level.SEVERE, msg, e);
         }
     }
 
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP <code>POST</code> method.
      * @param context servlet response
      * @throws Exception if an I/O error occurs
      */
@@ -110,7 +110,7 @@ public abstract class AbstractServlet extends HttpServlet {
     }
 
     /** Create new HTML element */
-    protected @NotNull HtmlElement getHtmlElement( HttpContext context, HtmlConfig config)  {
+    protected @NotNull HtmlElement getHtmlElement(HttpContext context, HtmlConfig config) {
         return AbstractHtmlElement.of(context, config);
     }
 

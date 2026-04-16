@@ -21,7 +21,7 @@ import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.request.HttpContext;
 
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.WebServlet;
 
 import static net.ponec.demo.servlet.FormServlet.Attrib.NOTE;
 

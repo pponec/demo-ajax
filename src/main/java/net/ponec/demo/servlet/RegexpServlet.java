@@ -19,20 +19,17 @@ import net.ponec.demo.model.Message;
 import net.ponec.demo.service.RegexpService;
 import org.jetbrains.annotations.NotNull;
 import org.ujorm.tools.web.AbstractHtmlElement;
-import org.ujorm.tools.web.Element;
 import org.ujorm.tools.web.Html;
 import org.ujorm.tools.web.HtmlElement;
 import org.ujorm.tools.web.ajax.JavaScriptWriter;
 import org.ujorm.tools.web.ao.HttpParameter;
 import org.ujorm.tools.web.json.JsonBuilder;
 import org.ujorm.tools.web.request.HttpContext;
-import org.ujorm.tools.xml.config.HtmlConfig;
-import javax.servlet.annotation.WebServlet;
+
+import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import static net.ponec.demo.servlet.ElementConverterServlet.Constants.CONTROL_CSS;
-import static net.ponec.demo.servlet.ElementConverterServlet.Constants.ERROR_CSS;
 import static net.ponec.demo.servlet.RegexpServlet.Attrib.REGEXP;
 import static net.ponec.demo.servlet.RegexpServlet.Attrib.TEXT;
 import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
@@ -41,14 +38,17 @@ import static net.ponec.demo.servlet.RegexpServlet.Constants.*;
  * A live example of the HtmlElement inside a Servlet using a ujo-web library.
  *
  * @author Pavel Ponec
- * @see <a href=https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
+ * @see <a href="https://github.com/pponec/demo-ajax">github.com/pponec/demo-ajax</a>
  */
 @WebServlet("/regexp")
 public class RegexpServlet extends AbstractServlet {
+
     /** Logger */
     private static final Logger LOGGER = Logger.getLogger(RegexpServlet.class.getName());
+
     /** A service */
     private final RegexpService service = new RegexpService();
+
     /** Max length of the text area */
     private final int inputMaxLength = 100_000;
 
@@ -59,14 +59,13 @@ public class RegexpServlet extends AbstractServlet {
     @Override
     protected void doGet(HttpContext context) {
         var title = "Regular expression tester";
-        try (HtmlElement html = AbstractHtmlElement.of(title, context, "/css/regexp.css")) {
+        try (var html = AbstractHtmlElement.of(title, context, "/css/regexp.css")) {
             writeJavaScript(html, AJAX_ENABLED);
-            Message msg = highlight(context);
-            try (Element body = html.addBody()) {
+            var msg = highlight(context);
+            try (var body = html.addBody()) {
                 body.addHeading(html.getTitle());
                 body.addDiv(SUBTITLE_CSS).addText(AJAX_ENABLED ? AJAX_READY_MSG : "");
-                try (Element form = body.addForm()
-                        .setMethod(Html.V_POST).setAction("?")) {
+                try (var form = body.addForm().setMethod(Html.V_POST).setAction("?")) {
                     form.addInput(CONTROL_CSS)
                             .setNameValue(REGEXP, REGEXP.of(context))
                             .setAttribute(Html.A_PLACEHOLDER, "Regular expression");
@@ -85,11 +84,11 @@ public class RegexpServlet extends AbstractServlet {
 
     @NotNull
     protected JsonBuilder doAjax(HttpContext context, JsonBuilder output) throws IOException {
-            final Message msg = highlight(context);
-            output.writeClass(OUTPUT_CSS, e -> e
-                    .addDiv(msg.isError() ? ERROR_CSS : OUTPUT_CSS, Html.SPAN).addRawText(msg));
-            output.writeClass(SUBTITLE_CSS, AJAX_READY_MSG);
-            return output;
+        var msg = highlight(context);
+        output.writeClass(OUTPUT_CSS, e -> e
+                .addDiv(msg.isError() ? ERROR_CSS : OUTPUT_CSS, Html.SPAN).addRawText(msg));
+        output.writeClass(SUBTITLE_CSS, AJAX_READY_MSG);
+        return output;
     }
 
     /** Build a HTML result */
@@ -100,8 +99,7 @@ public class RegexpServlet extends AbstractServlet {
     }
 
     /** Write a Javascript to a header */
-    protected void writeJavaScript(@NotNull final HtmlElement html,
-            final boolean enabled) {
+    protected void writeJavaScript(@NotNull final HtmlElement html, final boolean enabled) {
         if (enabled) {
             new JavaScriptWriter()
                     .setSubtitleSelector("." + SUBTITLE_CSS)
